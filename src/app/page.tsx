@@ -1,69 +1,448 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import Window from "@/components/windows/Window";
+import ProjectsWindow from "@/components/windows/ProjectsWindow";
+import ResumeWindow from "@/components/windows/ResumeWindow";
+import TerminalWindow from "@/components/windows/TerminalWindow";
+import SettingsWindow from "@/components/windows/SettingsWindow";
 
 export default function Home() {
+  const [time, setTime] = useState("");
+  const [activeWindow, setActiveWindow] = useState<string | null>(null);
+
+  const [isAboutMinimized, setIsAboutMinimized] = useState(false);
+  const [isProjectsMinimized, setIsProjectsMinimized] = useState(false);
+  const [isResumeMinimized, setIsResumeMinimized] = useState(false);
+  const [isTerminalMinimized, setIsTerminalMinimized] = useState(false);
+  const [isSettingsMinimized, setIsSettingsMinimized] = useState(false);
+
+  const [showGrid, setShowGrid] = useState(true);
+  const [showGlow, setShowGlow] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const updateTime = () => {
+      setTime(
+        new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      );
+    };
+
+    updateTime();
+
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className={`desktop
+    ${showGrid ? "desktop-grid-visible" : "desktop-grid-hidden"}
+    ${showGlow ? "desktop-glow-visible" : "desktop-glow-hidden"}
+    ${reducedMotion ? "reduced-motion" : ""}
+  `}>
+
+      {/* ================================
+          Desktop Icons
+      ================================= */}
+
+      <div>
+
+        <DesktopIcon
+          icon="👤"
+          label="About Me"
+          onClick={() => {
+            setActiveWindow("about");
+            setIsAboutMinimized(false);
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+        <DesktopIcon
+          icon="📁"
+          label="Projects"
+          onClick={() => {
+            setActiveWindow("projects");
+            setIsProjectsMinimized(false);
+          }}
+        />
+
+        <DesktopIcon
+          icon="💻"
+          label="Terminal"
+          onClick={() => {
+            setActiveWindow("terminal");
+            setIsTerminalMinimized(false);
+          }}
+        />
+
+        <DesktopIcon
+          icon="📄"
+          label="Resume"
+          onClick={() => {
+            setActiveWindow("resume");
+            setIsResumeMinimized(false);
+          }}
+        />
+
+        <DesktopIcon
+          icon="⚙️"
+          label="Settings"
+          onClick={() => {
+            setActiveWindow("settings");
+            setIsSettingsMinimized(false);
+          }}
+        />
+
+      </div>
+
+
+      {/* ================================
+          About Me Window
+      ================================= */}
+
+      {activeWindow === "about" && !isAboutMinimized && (
+        <Window
+          title="About Me"
+          icon="👤"
+          onClose={() => {
+            setActiveWindow(null);
+            setIsAboutMinimized(false);
+          }}
+          onMinimize={() => setIsAboutMinimized(true)}
+        >
+          <h2>
+            Hello there!
+          </h2>
+
+          <p>
+            It&apos;s Kushagra here. Nice to meet you!
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+
+          <p>
+            I am a passionate software developer with a
+            strong focus on building systems that people
+            can use and that can scale efficiently while
+            handling large volumes of users.
+          </p>
+
+          <p>
+            Nevertheless, I am also interested in building
+            AI solutions for real-world, day-to-day problems.
+          </p>
+
+          <p>
+            Go check out one of my projects:
+          </p>
+
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://github.com/Kushagra-1711/Repository_Auditor"
             target="_blank"
             rel="noopener noreferrer"
+            className="project-link"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
+            Repository Auditor →
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        </Window>
+      )}
+
+
+      {/* ================================
+          Projects Window
+      ================================= */}
+
+      {activeWindow === "projects" && !isProjectsMinimized && (
+        <Window
+          title="Projects"
+          icon="📁"
+          onClose={() => {
+            setActiveWindow(null);
+            setIsProjectsMinimized(false);
+          }}
+          onMinimize={() => setIsProjectsMinimized(true)}
+        >
+          <ProjectsWindow
+            onOpenWindow={(windowName) => {
+              if (windowName === "projects") {
+                setActiveWindow("projects");
+                setIsProjectsMinimized(false);
+              }
+
+              if (windowName === "resume") {
+                setActiveWindow("resume");
+                setIsResumeMinimized(false);
+              }
+
+              if (windowName === "terminal") {
+                setActiveWindow("terminal");
+                setIsTerminalMinimized(false);
+              }
+            }}
+          />
+        </Window>
+      )}
+
+
+      {/* ================================
+          Resume Window
+      ================================= */}
+
+      {activeWindow === "resume" && !isResumeMinimized && (
+        <Window
+          title="Resume"
+          icon="📄"
+          onClose={() => {
+            setActiveWindow(null);
+            setIsResumeMinimized(false);
+          }}
+          onMinimize={() => setIsResumeMinimized(true)}
+        >
+          <ResumeWindow />
+        </Window>
+      )}
+
+
+      {/* ================================
+          Terminal Window
+      ================================= */}
+
+      {activeWindow === "terminal" && !isTerminalMinimized && (
+        <Window
+          title="Terminal"
+          icon="💻"
+          onClose={() => {
+            setActiveWindow(null);
+            setIsTerminalMinimized(false);
+          }}
+          onMinimize={() => setIsTerminalMinimized(true)}
+        >
+          <TerminalWindow
+            onOpenWindow={(windowName) => {
+              if (windowName === "about") {
+                setActiveWindow("about");
+                setIsAboutMinimized(false);
+              }
+
+              if (windowName === "projects") {
+                setActiveWindow("projects");
+                setIsProjectsMinimized(false);
+              }
+
+              if (windowName === "resume") {
+                setActiveWindow("resume");
+                setIsResumeMinimized(false);
+              }
+            }}
+          />
+        </Window>
+      )}
+
+      {/* Settings Window */}
+      {activeWindow === "settings" && !isSettingsMinimized && (
+        <Window
+          title="Settings"
+          icon="⚙️"
+          onClose={() => {
+            setActiveWindow(null);
+            setIsSettingsMinimized(false);
+          }}
+          onMinimize={() => setIsSettingsMinimized(true)}
+        >
+          <SettingsWindow
+            showGrid={showGrid}
+            showGlow={showGlow}
+            reducedMotion={reducedMotion}
+            onToggleGrid={() => setShowGrid((value) => !value)}
+            onToggleGlow={() => setShowGlow((value) => !value)}
+            onToggleReducedMotion={() =>
+              setReducedMotion((value) => !value)
+            }
+          />
+        </Window>
+      )}
+
+
+      {/* ================================
+          Center Branding
+      ================================= */}
+
+      <div className="hero">
+
+        <p className="hero-greeting">
+          WELCOME TO MY DESKTOP
+        </p>
+
+        <h1>
+          Kushagra Dwivedi
+        </h1>
+
+        <p className="hero-role">
+          Software Engineer
+          <span>•</span>
+          AI/ML
+          <span>•</span>
+          Backend
+        </p>
+
+        <div className="hero-status">
+          <span className="status-dot" />
+          Available for opportunities
         </div>
-      </main>
-    </div>
+
+      </div>
+
+
+      {/* ================================
+          Taskbar
+      ================================= */}
+
+      <div className="taskbar">
+
+        <div className="taskbar-left">
+
+          <button className="start-button">
+            ⊞
+          </button>
+
+          <button className="taskbar-icon">
+            ⌕
+          </button>
+
+          <button className="taskbar-icon">
+            📁
+          </button>
+
+          <button className="taskbar-icon">
+            🌐
+          </button>
+
+          {/* Terminal */}
+          <button
+            className="taskbar-icon"
+            onClick={() => {
+              setActiveWindow("terminal");
+              setIsTerminalMinimized(false);
+            }}
+            aria-label="Open Terminal"
+          >
+            💻
+          </button>
+
+
+
+
+          {/* About Me */}
+          {activeWindow === "about" && (
+            <button
+              className="taskbar-icon taskbar-window"
+              onClick={() => setIsAboutMinimized(false)}
+              aria-label="Restore About Me"
+            >
+              👤
+            </button>
+          )}
+
+
+          {/* Projects */}
+          {activeWindow === "projects" && (
+            <button
+              className="taskbar-icon taskbar-window"
+              onClick={() => setIsProjectsMinimized(false)}
+              aria-label="Restore Projects"
+            >
+              📁
+            </button>
+          )}
+
+
+          {/* Resume */}
+          {activeWindow === "resume" && (
+            <button
+              className="taskbar-icon taskbar-window"
+              onClick={() => setIsResumeMinimized(false)}
+              aria-label="Restore Resume"
+            >
+              📄
+            </button>
+          )}
+
+
+          {/* Terminal Restore */}
+          {activeWindow === "terminal" && (
+            <button
+              className="taskbar-icon taskbar-window"
+              onClick={() => setIsTerminalMinimized(false)}
+              aria-label="Restore Terminal"
+            >
+              💻
+            </button>
+          )}
+
+        </div>
+
+
+
+        {/* Settings Restore */}
+        {activeWindow === "settings" && (
+          <button
+            className="taskbar-icon taskbar-window"
+            onClick={() => setIsSettingsMinimized(false)}
+            aria-label="Restore Settings"
+          >
+            ⚙️
+          </button>
+        )}
+
+
+        {/* System Tray */}
+
+        <div className="system-tray">
+
+          <span>⌃</span>
+          <span>◉</span>
+          <span>🔊</span>
+          <span>⌁</span>
+
+          <span className="clock">
+            {time}
+          </span>
+
+        </div>
+
+      </div>
+
+    </main>
+  );
+}
+
+
+/* ================================
+   Desktop Icon Component
+================================ */
+
+function DesktopIcon({
+  icon,
+  label,
+  onClick,
+}: {
+  icon: string;
+  label: string;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      className="desktop-icon"
+      onClick={onClick}
+    >
+      <span className="desktop-icon-image">
+        {icon}
+      </span>
+
+      <span className="desktop-icon-label">
+        {label}
+      </span>
+    </button>
   );
 }
