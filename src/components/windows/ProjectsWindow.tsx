@@ -3,6 +3,23 @@
 import { Project } from "@/types/project";
 
 const projects: Project[] = [
+
+    {
+        name: "Career Conversation Agent",
+        icon: "🤖",
+        description:
+            "An Chatbot agent designed to explain about my career progress, the things I built, etc.",
+        technologies: [
+            "Groq",
+            "LLMs",
+            "Hugging Face",
+            "Gradio"
+        ],
+        url:
+            "https://huggingface.co/spaces/kushagra1711/carrier-conversation-kushagra",
+    },
+
+
     {
         name: "Repository Auditor",
         icon: "🛡️",
@@ -65,20 +82,7 @@ const projects: Project[] = [
             "https://github.com/Kushagra-1711/Social_Media_Content_Analyzer",
     },
 
-    {
-        name: "LangGraph Customer Support Orchestration",
-        icon: "🤖",
-        description:
-            "An agentic AI customer support system designed to orchestrate specialized agents through a structured LangGraph workflow.",
-        technologies: [
-            "Python",
-            "LangGraph",
-            "LLMs",
-            "Agentic AI",
-        ],
-        github:
-            "https://github.com/Kushagra-1711/langgraph-customer-support-orchestration",
-    },
+
 ];
 
 interface ProjectsWindowProps {

@@ -4,5 +4,6 @@ export interface Project {
     technologies: string[];
     icon: string;
     github?: string;
-    live?: string;
+   live?: string;
+   url?: string;
 }
