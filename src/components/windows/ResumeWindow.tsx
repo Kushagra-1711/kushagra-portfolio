@@ -15,7 +15,7 @@ export default function ResumeWindow() {
                 <div className="resume-actions">
 
                     <a
-                        href="/Kushagra_Dwivedi_Resume_V3.pdf"
+                        href="/Kushagra_Dwivedi_Resume_V4.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="resume-action"
@@ -24,7 +24,7 @@ export default function ResumeWindow() {
                     </a>
 
                     <a
-                        href="/Kushagra_Dwivedi_Resume_V3.pdf"
+                        href="/Kushagra_Dwivedi_Resume_V4.pdf"
                         download="Kushagra_Dwivedi_Resume.pdf"
                         className="resume-action"
                     >
@@ -39,7 +39,7 @@ export default function ResumeWindow() {
             <div className="resume-preview">
 
                 <iframe
-                    src="/Kushagra_Dwivedi_Resume_V3.pdf"
+                    src="/Kushagra_Dwivedi_Resume_V4.pdf"
                     title="Kushagra Dwivedi Resume"
                 />
 
